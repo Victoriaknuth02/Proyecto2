@@ -10,16 +10,16 @@ package proyecto2_vicky;
  */
 public class TablaHash {
 
-    public Lista[] archivosResumen;
+    public Lista[] integrantes;
     public int size;
     public int count;
 
     public TablaHash(int size) {
         this.size = size;
         this.count = 0;
-        this.archivosResumen = new Lista[this.size];
+        this.integrantes = new Lista[this.size];
         for (int i = 0; i < this.size; i++) {
-            this.archivosResumen[i] = new Lista();
+            this.integrantes[i] = new Lista();
         }
     }
 
@@ -33,24 +33,49 @@ public class TablaHash {
         return hash % this.size;
     }
 
-    public void insertar(Nodo integrante) {
-        int hash = this.hash(integrante.mote.toLowerCase());
-        if (this.archivosResumen[hash].buscar(integrante.mote.toLowerCase()) != null) {
-            return;
+    public void insertar(Nodo integrante, int modo) {
+        int hash = -1;
+        if (modo == 1) {
+             hash = this.hash(integrante.nombre.toLowerCase());
+
+        } else if (modo == 2) {
+             hash = this.hash(integrante.mote.toLowerCase());
+
+        } else if (modo == 3) {
+             hash = this.hash(integrante.titulo.toLowerCase());
+
         }
-        else {
-            this.archivosResumen[hash].insertar(integrante);
+        if (this.integrantes[hash].buscar(integrante.nombre.toLowerCase(), 1) != null && this.integrantes[hash].buscar(integrante.mote.toLowerCase(), 2) != null && this.integrantes[hash].buscar(integrante.titulo.toLowerCase(), 3) != null) {
+            return;
+        } else {
+            this.integrantes[hash].insertar(integrante);
             this.count++;
         }
     }
 
-    public Nodo buscarPorTitulo(String mote_integrante) {
-        int hash = this.hash(mote_integrante.toLowerCase());
-        if (this.archivosResumen[hash].pFirst.mote.toLowerCase().equals(mote_integrante.toLowerCase())) {
-            return this.archivosResumen[hash].pFirst;
-        } else {
-            return this.archivosResumen[hash].buscar(mote_integrante);
+    public Nodo buscar(String clave, int modo) {
+        int hash = this.hash(clave.toLowerCase());
+        if (modo == 1) {
+            if (this.integrantes[hash].pFirst.nombre.toLowerCase().equals(clave.toLowerCase())) {
+                return this.integrantes[hash].pFirst;
+            } else {
+                return this.integrantes[hash].buscar(clave, 1);
+            }
+        } else if (modo == 2) {
+            if (this.integrantes[hash].pFirst.mote.toLowerCase().equals(clave.toLowerCase())) {
+                return this.integrantes[hash].pFirst;
+            } else {
+                return this.integrantes[hash].buscar(clave, 2);
+            }
+        } else if (modo == 3) {
+            if (this.integrantes[hash].pFirst.titulo.toLowerCase().equals(clave.toLowerCase())) {
+                return this.integrantes[hash].pFirst;
+            } else {
+                return this.integrantes[hash].buscar(clave, 3);
+            }
         }
+        return null;
+
     }
 
 }
