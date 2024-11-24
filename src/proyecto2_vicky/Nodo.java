@@ -23,7 +23,8 @@ public class Nodo {
     
     Nodo pNext;
     
-    public Nodo(String ofHisName, Nodo padre, String ofEyes, String ofHair){
+    public Nodo(String nombre, String ofHisName, Nodo padre, String ofEyes, String ofHair){
+        this.nombre = nombre;
         this.numeral = ofHisName;
         this.padre = padre;
         this.ojos = ofEyes;
