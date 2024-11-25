@@ -9,6 +9,34 @@ package proyecto2_vicky;
  * @author Alesia
  */
 public class FuncionesProyecto {
+
+    /**
+     * @return the arbolGenealogico
+     */
+    public ArbolGenealogico getArbolGenealogico() {
+        return arbolGenealogico;
+    }
+
+    /**
+     * @param arbolGenealogico the arbolGenealogico to set
+     */
+    public void setArbolGenealogico(ArbolGenealogico arbolGenealogico) {
+        this.arbolGenealogico = arbolGenealogico;
+    }
+
+    /**
+     * @return the tablaHash
+     */
+    public TablaHash getTablaHash() {
+        return tablaHash;
+    }
+
+    /**
+     * @param tablaHash the tablaHash to set
+     */
+    public void setTablaHash(TablaHash tablaHash) {
+        this.tablaHash = tablaHash;
+    }
     private ArbolGenealogico arbolGenealogico;
     private TablaHash tablaHash;
 
@@ -18,17 +46,17 @@ public class FuncionesProyecto {
     }
 
     public void mostrarRegistro(String mote) {
-        Nodo integrante = arbolGenealogico.buscar(mote);
+        Nodo integrante = getArbolGenealogico().buscar(mote);
         if (integrante != null) {
-            System.out.println("Nombre: " + integrante.nombre);
-            System.out.println("Numeral: " + integrante.numeral);
-            System.out.println("Ojos: " + integrante.ojos);
-            System.out.println("Cabello: " + integrante.cabello);
-            System.out.println("Título: " + integrante.titulo);
-            System.out.println("Mote: " + integrante.mote);
-            System.out.println("Esposa: " + integrante.esposa);
-            System.out.println("Notas: " + integrante.notas);
-            System.out.println("Destino: " + integrante.destino);
+            System.out.println("Nombre: " + integrante.getNombre());
+            System.out.println("Numeral: " + integrante.getNumeral());
+            System.out.println("Ojos: " + integrante.getOjos());
+            System.out.println("Cabello: " + integrante.getCabello());
+            System.out.println("Título: " + integrante.getTitulo());
+            System.out.println("Mote: " + integrante.getMote());
+            System.out.println("Esposa: " + integrante.getEsposa());
+            System.out.println("Notas: " + integrante.getNotas());
+            System.out.println("Destino: " + integrante.getDestino());
         } else {
             System.out.println("No se encontró el integrante con el mote: " + mote);
         }
@@ -36,24 +64,24 @@ public class FuncionesProyecto {
 
     public void buscarPorNombre(String busqueda) {
         System.out.println("Registros que coinciden con: " + busqueda);
-        for (int i = 0; i < tablaHash.size; i++) {
-            Nodo encontrado = tablaHash.integrantes[i].buscar(busqueda.toLowerCase(), 1);
+        for (int i = 0; i < getTablaHash().getSize(); i++) {
+            Nodo encontrado = getTablaHash().getIntegrantes()[i].buscar(busqueda.toLowerCase(), 1);
             if (encontrado != null) {
-                System.out.println("Nombre: " + encontrado.nombre + ", Mote: " + encontrado.mote);
+                System.out.println("Nombre: " + encontrado.getNombre() + ", Mote: " + encontrado.getMote());
             }
         }
     }
 
-    public void mostrarAntepasados(String mote) {
-        arbolGenealogico.mostrarAntepasados(mote);
-    }
+//    public void mostrarAntepasados(String mote) {
+//        arbolGenealogico.mostrarAntepasados(mote);
+//    }
 
     public void buscarPorTitulo(String titulo) {
         System.out.println("Registros con el título: " + titulo);
-        arbolGenealogico.buscarPorTitulo(titulo);
+        getArbolGenealogico().buscarPorTitulo(titulo);
     }
 
     public void listarGeneracion(int generacion) {
-        arbolGenealogico.listarGeneracion(generacion);
+        getArbolGenealogico().listarGeneracion(generacion);
     }
 }

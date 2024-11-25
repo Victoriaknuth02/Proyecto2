@@ -47,7 +47,7 @@ public class GraphStream extends javax.swing.JFrame implements ViewerListener {
         viewer.getDefaultView().enableMouseOptions();
         GraphStreamPanel.setLayout(new BorderLayout());
         GraphStreamPanel.add((Component) view, BorderLayout.CENTER);
-        GraphStreamPanel.setPreferredSize(new Dimension(1170, 640)); 
+        GraphStreamPanel.setPreferredSize(new Dimension(2060, 1200));
         GraphStreamPanel.setFocusable(true);
         GraphStreamPanel.requestFocusInWindow();
         GraphStreamPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -55,7 +55,50 @@ public class GraphStream extends javax.swing.JFrame implements ViewerListener {
         fromviewer.addViewerListener(this);
         fromviewer.addSink(graph);
 
-        populateGraph(tree.raiz, 0, 0);
+        populateGraph(tree.getRaiz(), 0, 0);
+
+        PumpViewer();
+
+        GraphStreamPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int clickX = e.getX();
+                int clickY = e.getY();
+                System.out.println("Presionado" + clickX + "  " + clickY);
+                for (Node node : graph) {
+                    double[] position = (double[]) node.getAttribute("xy");
+                    double nodeX = position[0];
+                    double nodeY = position[1];
+                    System.out.println("Nodo: " + nodeX + "     " + nodeY);
+                    if (Math.abs(clickX - nodeX) < 50 && Math.abs(clickY - nodeY) < 50) {
+                        buttonPushed(node.getId());
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+    public GraphStream(ArbolGenealogico tree, Lista ant) {
+        this.tree = tree;
+        initComponents();
+        this.setLocationRelativeTo(null);
+        graph = new SingleGraph("a");
+
+        Viewer viewer = new SwingViewer(graph, Viewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
+        View view = viewer.addDefaultView(false);
+        viewer.getDefaultView().enableMouseOptions();
+        GraphStreamPanel.setLayout(new BorderLayout());
+        GraphStreamPanel.add((Component) view, BorderLayout.CENTER);
+        GraphStreamPanel.setPreferredSize(new Dimension(2060, 1200));
+        GraphStreamPanel.setFocusable(true);
+        GraphStreamPanel.requestFocusInWindow();
+        GraphStreamPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        fromviewer = viewer.newViewerPipe();
+        fromviewer.addViewerListener(this);
+        fromviewer.addSink(graph);
+
+        populateGraph(tree.getRaiz(), 0, 0, ant);
 
         PumpViewer();
 
@@ -83,25 +126,59 @@ public class GraphStream extends javax.swing.JFrame implements ViewerListener {
         if (nodo == null) {
             return;
         }
-
-        graph.addNode(nodo.mote);
-        Node node = graph.getNode(nodo.mote);
+        String clave = nodo.getNombre() + "/" + nodo.getNumeral() + "/" + nodo.getMote();
+        graph.addNode(clave);
+        Node node = graph.getNode(clave);
         node.setAttribute("xyz", x, y, 1);
-        node.setAttribute("ui.label", nodo.nombre);
-        node.setAttribute("ui.style", "shape: box; fill-color: lightblue; size: 50px; padding: 0px; stroke-width: 2px;");
-        node.setAttribute("ui.draggable", false); // Desactivar el arrastre
-        node.setAttribute("ui.clickable", true); // Hacerlo clickeable
+        node.setAttribute("ui.label", nodo.getNombre() + ", " + nodo.getNumeral() + " of his name");
 
-        if (nodo.padre != null) {
-            graph.addEdge(nodo.padre.mote + "-" + nodo.mote, nodo.padre.mote, nodo.mote);
+        node.setAttribute("ui.style", "shape: box; fill-color: lightblue; size: 40px; padding: 0px; stroke-width: 2px;");
+        node.setAttribute("ui.draggable", false);
+        node.setAttribute("ui.clickable", true);
+
+        if (nodo.getPadre() != null && nodo != tree.getRaiz()) {
+            String clave2 = nodo.getPadre().getNombre() + "/" + nodo.getPadre().getNumeral() + "/" + nodo.getPadre().getMote();
+
+            graph.addEdge(clave2 + "-" + clave, clave2, clave);
         }
 
-        if (nodo.hijos != null) {
-            int childX = x - (nodo.hijos.length * 80) / 2;
+        if (nodo.getHijos() != null) {
+            int childX = x - (nodo.getHijos().length * 50) / 2;
             int childY = y - 100;
-            for (Nodo hijo : nodo.hijos) {
+            for (Nodo hijo : nodo.getHijos()) {
                 populateGraph(hijo, childX, childY);
-                childX += 80;
+                childX += 200;
+            }
+        }
+    }
+
+    private void populateGraph(Nodo nodo, int x, int y, Lista ant) {
+        if (nodo == null) {
+            return;
+        }
+
+        String clave = nodo.getNombre() + "/" + nodo.getNumeral();
+        if (ant.buscar(nodo.getNombre() + ", " + nodo.getNumeral() + " of his name", 1) != null) {
+            graph.addNode(clave);
+            Node node = graph.getNode(clave);
+            node.setAttribute("xyz", x, y, 1);
+            node.setAttribute("ui.label", nodo.getNombre() + ", " + nodo.getNumeral() + " of his name");
+            node.setAttribute("ui.style", "shape: box; fill-color: lightblue; size: 40px; padding: 0px; stroke-width: 2px;");
+            node.setAttribute("ui.draggable", false);
+            node.setAttribute("ui.clickable", true);
+
+            if (nodo.getPadre() != null && nodo != tree.getRaiz()) {
+                String clave2 = nodo.getPadre().getNombre() + "/" + nodo.getPadre().getNumeral();
+
+                graph.addEdge(clave2 + "-" + clave, clave2, clave);
+            }
+        }
+        if (nodo.getHijos() != null) {
+            int childX = x - (nodo.getHijos().length * 50) / 2;
+            int childY = y - 100;
+            for (Nodo hijo : nodo.getHijos()) {
+                populateGraph(hijo, childX, childY, ant);
+                childX += 200;
             }
         }
     }
@@ -131,11 +208,15 @@ public class GraphStream extends javax.swing.JFrame implements ViewerListener {
 
     @Override
     public void buttonPushed(String id) {
-        System.out.println("Botón presionado: " + id);
         Node node = graph.getNode(id);
         if (node != null) {
             String nombre = (String) node.getAttribute("ui.label");
-            JOptionPane.showMessageDialog(this, "Has hecho clic en el nodo: " + nombre);
+//            System.out.println("kldsj'osdj' epofewjwt3-ewu3-or7we368w36828287423");
+//            System.out.println(nombre);
+            String mensaje = tree.buscarNumeral(nombre).toString();
+//            System.out.println(mensaje);
+
+            JOptionPane.showMessageDialog(this, "Detalles: " + mensaje);
         } else {
             System.out.println("El nodo no se encontró: " + id);
         }

@@ -48,10 +48,12 @@ public class BusquedaArchivo extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(204, 204, 204));
         jLabel1.setText("SELECCION DE ARCHIVO");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, -1, -1));
 
         jButton2.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(204, 204, 204));
         jButton2.setText("Busca un archivo");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -61,6 +63,7 @@ public class BusquedaArchivo extends javax.swing.JFrame {
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 290, -1, -1));
 
         jButton5.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        jButton5.setForeground(new java.awt.Color(204, 204, 204));
         jButton5.setText("Regresar");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -89,8 +92,8 @@ public class BusquedaArchivo extends javax.swing.JFrame {
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
              cg.leerArchivo(selectedFile.getAbsolutePath());
-             a = cg.arbolGenealogico;
-        m = cg.tablaHash;
+             a = cg.getArbolGenealogico();
+        m = cg.getTablaHash();
         }
         Menu u = new Menu(a, m);
         this.dispose();

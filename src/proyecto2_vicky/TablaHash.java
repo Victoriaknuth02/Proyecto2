@@ -68,7 +68,7 @@ public class TablaHash {
         if (modo == 1) {
             String claves[] = clave.split(",");
 //            System.out.println("ppp   "+this.integrantes[hash].pFirst.nombre + ", " + this.integrantes[hash].pFirst.numeral + " of his name");
-                                        System.out.println("----------" +clave);
+//                                        System.out.println("----------" +clave);
 
             if (this.getIntegrantes()[hash].getpFirst().getNombre().trim().toLowerCase().equals(claves[0].trim().toLowerCase()) && claves[1].trim().toLowerCase().contains(this.getIntegrantes()[hash].getpFirst().getNumeral().trim().toLowerCase())) {
 
