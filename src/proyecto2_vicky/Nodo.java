@@ -8,23 +8,37 @@ package proyecto2_vicky;
  *
  * @author vicky
  */
+/**
+ * La clase {@code Nodo} representa un nodo en el árbol genealógico.
+ * Cada nodo contiene información sobre una persona, incluyendo su nombre,
+ * numeral, padres, hijos y otros atributos relevantes.
+ */
 public class Nodo {
 
-    private String nombre;
-    private String numeral;
-    private Nodo padre;
-    private String madre;
-    private String mote;
-    private String titulo;
-    private String esposa;
-    private String ojos;
-    private String cabello;
-    private Nodo[] hijos;
-    private String notas;
-    private String destino;
+    private String nombre;     // Nombre de la persona
+    private String numeral;    // Numeral asociado a la persona
+    private Nodo padre;        // Nodo del padre
+    private String madre;      // Nombre de la madre
+    private String mote;       // Mote de la persona
+    private String titulo;     // Título de la persona
+    private String esposa;     // Esposa de la persona
+    private String ojos;       // Color de ojos
+    private String cabello;     // Color de cabello
+    private Nodo[] hijos;      // Array de nodos hijos
+    private String notas;      // Notas sobre la persona
+    private String destino;     // Destino de la persona
 
-    private Nodo pNext;
+    private Nodo pNext;        // Siguiente nodo en la lista enlazada
 
+    /**
+     * Crea un nuevo nodo con la información especificada.
+     *
+     * @param nombre   el nombre de la persona.
+     * @param ofHisName el numeral de la persona.
+     * @param padre    el nodo del padre.
+     * @param ofEyes   el color de ojos de la persona.
+     * @param ofHair   el color de cabello de la persona.
+     */
     public Nodo(String nombre, String ofHisName, Nodo padre, String ofEyes, String ofHair) {
         this.nombre = nombre;
         this.numeral = ofHisName;

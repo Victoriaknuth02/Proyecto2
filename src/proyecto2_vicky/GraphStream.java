@@ -10,7 +10,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.concurrent.Future;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
@@ -24,8 +23,9 @@ import org.graphstream.ui.view.ViewerListener;
 import org.graphstream.ui.view.ViewerPipe;
 
 /**
- *
- * @author Alesia
+ * La clase {@code GraphStream} es una interfaz gráfica que visualiza un árbol genealógico
+ * utilizando la biblioteca GraphStream. Permite interactuar con los nodos del árbol
+ * y muestra detalles sobre cada nodo al hacer clic en ellos.
  */
 public class GraphStream extends javax.swing.JFrame implements ViewerListener {
 
@@ -34,7 +34,10 @@ public class GraphStream extends javax.swing.JFrame implements ViewerListener {
     final ViewerPipe fromviewer;
 
     /**
-     * Creates new form GraphStream
+     * Crea una nueva instancia de {@code GraphStream} y configura la visualización
+     * del árbol genealógico.
+     *
+     * @param tree el árbol genealógico que se va a visualizar.
      */
     public GraphStream(ArbolGenealogico tree) {
         this.tree = tree;
@@ -79,6 +82,13 @@ public class GraphStream extends javax.swing.JFrame implements ViewerListener {
         });
     }
 
+    /**
+     * Crea una nueva instancia de {@code GraphStream} y configura la visualización
+     * del árbol genealógico, incluyendo una lista de antepasados.
+     *
+     * @param tree el árbol genealógico que se va a visualizar.
+     * @param ant  la lista de antepasados a incluir en la visualización.
+     */
     public GraphStream(ArbolGenealogico tree, Lista ant) {
         this.tree = tree;
         initComponents();
@@ -110,7 +120,7 @@ public class GraphStream extends javax.swing.JFrame implements ViewerListener {
                 System.out.println("Presionado" + clickX + "  " + clickY);
                 for (Node node : graph) {
                     double[] position = (double[]) node.getAttribute("xy");
-                    double nodeX = position[0];
+                    double nodeX = position [0];
                     double nodeY = position[1];
                     System.out.println("Nodo: " + nodeX + "     " + nodeY);
                     if (Math.abs(clickX - nodeX) < 50 && Math.abs(clickY - nodeY) < 50) {
@@ -122,6 +132,14 @@ public class GraphStream extends javax.swing.JFrame implements ViewerListener {
         });
     }
 
+    /**
+     * Población del gráfico a partir de un nodo dado, estableciendo su posición
+     * en el gráfico.
+     *
+     * @param nodo el nodo a agregar al gráfico.
+     * @param x    la coordenada x para la posición del nodo.
+     * @param y    la coordenada y para la posición del nodo.
+     */
     private void populateGraph(Nodo nodo, int x, int y) {
         if (nodo == null) {
             return;
@@ -138,7 +156,6 @@ public class GraphStream extends javax.swing.JFrame implements ViewerListener {
 
         if (nodo.getPadre() != null && nodo != tree.getRaiz()) {
             String clave2 = nodo.getPadre().getNombre() + "/" + nodo.getPadre().getNumeral() + "/" + nodo.getPadre().getMote();
-
             graph.addEdge(clave2 + "-" + clave, clave2, clave);
         }
 
@@ -152,6 +169,15 @@ public class GraphStream extends javax.swing.JFrame implements ViewerListener {
         }
     }
 
+    /**
+     * Población del gráfico a partir de un nodo dado, incluyendo una lista de
+     * antepasados.
+     *
+     * @param nodo el nodo a agregar al gráfico.
+     * @param x    la coordenada x para la posición del nodo.
+     * @param y    la coordenada y para la posición del nodo.
+     * @param ant  la lista de antepasados a incluir en la visualización.
+     */
     private void populateGraph(Nodo nodo, int x, int y, Lista ant) {
         if (nodo == null) {
             return;
@@ -169,7 +195,6 @@ public class GraphStream extends javax.swing.JFrame implements ViewerListener {
 
             if (nodo.getPadre() != null && nodo != tree.getRaiz()) {
                 String clave2 = nodo.getPadre().getNombre() + "/" + nodo.getPadre().getNumeral();
-
                 graph.addEdge(clave2 + "-" + clave, clave2, clave);
             }
         }
@@ -183,6 +208,9 @@ public class GraphStream extends javax.swing.JFrame implements ViewerListener {
         }
     }
 
+    /**
+     * Inicia un hilo para actualizar la visualización del gráfico.
+     */
     private void PumpViewer() {
         SwingWorker<Void, Void> worker;
         worker = new SwingWorker<>() {
@@ -190,7 +218,7 @@ public class GraphStream extends javax.swing.JFrame implements ViewerListener {
             protected Void doInBackground() throws Exception {
                 while (!isCancelled()) {
                     fromviewer.pump();
-                    try {
+ try {
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
@@ -211,11 +239,7 @@ public class GraphStream extends javax.swing.JFrame implements ViewerListener {
         Node node = graph.getNode(id);
         if (node != null) {
             String nombre = (String) node.getAttribute("ui.label");
-//            System.out.println("kldsj'osdj' epofewjwt3-ewu3-or7we368w36828287423");
-//            System.out.println(nombre);
             String mensaje = tree.buscarNumeral(nombre).toString();
-//            System.out.println(mensaje);
-
             JOptionPane.showMessageDialog(this, "Detalles: " + mensaje);
         } else {
             System.out.println("El nodo no se encontró: " + id);
@@ -233,6 +257,7 @@ public class GraphStream extends javax.swing.JFrame implements ViewerListener {
     @Override
     public void mouseLeft(String string) {
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.

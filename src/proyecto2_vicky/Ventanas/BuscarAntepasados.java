@@ -51,6 +51,7 @@ static ArbolGenealogico a;
         jPanel1.setBackground(new java.awt.Color(51, 51, 51));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jButton2.setBackground(new java.awt.Color(102, 102, 102));
         jButton2.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jButton2.setForeground(new java.awt.Color(204, 204, 204));
         jButton2.setText("Buscar");
@@ -74,6 +75,7 @@ static ArbolGenealogico a;
         jLabel3.setText("Escribe el nombre con el formato (nombre, numeral) o el mote:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 160, -1, -1));
 
+        jButton5.setBackground(new java.awt.Color(102, 102, 102));
         jButton5.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jButton5.setForeground(new java.awt.Color(204, 204, 204));
         jButton5.setText("Regresar");

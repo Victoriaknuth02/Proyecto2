@@ -18,16 +18,30 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * La clase {@code CargaDeJSON} se encarga de cargar un árbol genealógico
+ * desde un archivo JSON y de insertar los datos en una estructura de árbol
+ * genealógico y una tabla hash.
+ */
 public class CargaDeJSON {
 
     private ArbolGenealogico arbolGenealogico;
     private TablaHash tablaHash;
 
+    /**
+     * Crea una instancia de {@code CargaDeJSON} inicializando un nuevo
+     * árbol genealógico y una tabla hash.
+     */
     public CargaDeJSON() {
         arbolGenealogico = new ArbolGenealogico();
         tablaHash = new TablaHash(100); // Tamaño de la tabla hash
     }
 
+    /**
+     * Lee un archivo JSON desde la ruta especificada y procesa su contenido.
+     *
+     * @param ruta la ruta del archivo JSON a leer.
+     */
     public void leerArchivo(String ruta) {
         String jsonContent = readJsonFile(ruta);
         if (jsonContent != null) {
@@ -36,6 +50,12 @@ public class CargaDeJSON {
         }
     }
 
+    /**
+     * Lee el contenido de un archivo JSON y lo devuelve como una cadena.
+     *
+     * @param filePath la ruta del archivo JSON.
+     * @return el contenido del archivo JSON como cadena, o {@code null} si hubo un error.
+     */
     public static String readJsonFile(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             StringBuilder jsonContent = new StringBuilder();
@@ -50,6 +70,11 @@ public class CargaDeJSON {
         }
     }
 
+    /**
+     * Procesa un elemento JSON y lo inserta en el árbol genealógico y la tabla hash.
+     *
+     * @param jsonElement el elemento JSON a procesar.
+     */
     public void procesarJson(JsonElement jsonElement) {
         if (jsonElement.isJsonObject()) {
             JsonObject jsonObject = jsonElement.getAsJsonObject();
@@ -85,7 +110,6 @@ public class CargaDeJSON {
                                 padre = detalleJson.get(clave).getAsString();
                             } else if (clave.equals("Born to") && madre.equals("Desconocido")) {
                                 madre = detalleJson.get(clave).getAsString();
-
                             }
                             detalles.add(clave, detalleJson.get(clave));
                         }
@@ -108,18 +132,6 @@ public class CargaDeJSON {
                             numeral = numeralElement.getAsString();
                         }
                     }
-
-//                    if (detalles.has("Born to")) {
-//                        JsonElement padreElement = detalles.get("Born to");
-//                        if (padreElement.isJsonArray()) {
-//                            JsonArray arrayPadre = padreElement.getAsJsonArray();
-//                            if (arrayPadre.size() > 0) {
-//                                padre = arrayPadre.get(0).getAsString();
-//                            }
-//                        } else if (padreElement.isJsonPrimitive()) {
-//                            padre = padreElement.getAsString();
-//                        }
-//                    }
 
                     if (detalles.has("Of eyes")) {
                         JsonElement colorOjosElement = detalles.get("Of eyes");
@@ -221,7 +233,6 @@ public class CargaDeJSON {
                     Nodo insertado = getArbolGenealogico().insertar(nombreCompleto, numeral, colorOjos, colorCabello, titulo, mote, esposa, notas, destino, padre, madre);
                     if (insertado.getMote() != null) {
                         getTablaHash().insertar(insertado, 2);
-
                     }
                 }
             }
@@ -231,7 +242,7 @@ public class CargaDeJSON {
     }
 
     /**
-     * @return the arbolGenealogico
+     * @return the arbol Genealogico
      */
     public ArbolGenealogico getArbolGenealogico() {
         return arbolGenealogico;

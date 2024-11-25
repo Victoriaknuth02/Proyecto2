@@ -64,6 +64,7 @@ static ArbolGenealogico a;
         jLabel1.setText("Selecciona uno para ver sus detalles:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 290, -1, -1));
 
+        jButton2.setBackground(new java.awt.Color(102, 102, 102));
         jButton2.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jButton2.setForeground(new java.awt.Color(204, 204, 204));
         jButton2.setText("Seleccionar");
@@ -103,6 +104,7 @@ static ArbolGenealogico a;
         jLabel5.setText("Titulos presentes en la familia:");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, -1, -1));
 
+        jButton3.setBackground(new java.awt.Color(102, 102, 102));
         jButton3.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jButton3.setForeground(new java.awt.Color(204, 204, 204));
         jButton3.setText("Buscar");
@@ -113,6 +115,7 @@ static ArbolGenealogico a;
         });
         jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 190, -1, -1));
 
+        jButton5.setBackground(new java.awt.Color(102, 102, 102));
         jButton5.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jButton5.setForeground(new java.awt.Color(204, 204, 204));
         jButton5.setText("Regresar");

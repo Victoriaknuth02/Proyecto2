@@ -8,12 +8,23 @@ package proyecto2_vicky;
  *
  * @author vicky
  */
+/**
+ * La clase {@code TablaHash} implementa una tabla hash para almacenar nodos que
+ * representan integrantes de un árbol genealógico. Utiliza listas enlazadas
+ * para manejar colisiones y permite insertar y buscar integrantes de manera
+ * eficiente.
+ */
 public class TablaHash {
 
-    private Lista[] integrantes;
-    private int size;
-    private int count;
+    private Lista[] integrantes; // Arreglo de listas enlazadas para almacenar los integrantes
+    private int size;            // Tamaño de la tabla hash
+    private int count;           // Contador de elementos en la tabla
 
+    /**
+     * Crea una nueva instancia de {@code TablaHash} con el tamaño especificado.
+     *
+     * @param size el tamaño de la tabla hash.
+     */
     public TablaHash(int size) {
         this.size = size;
         this.count = 0;
@@ -23,6 +34,12 @@ public class TablaHash {
         }
     }
 
+    /**
+     * Calcula el valor hash para una clave dada.
+     *
+     * @param mote_integrante la clave para la cual se calculará el hash.
+     * @return el valor hash correspondiente a la clave.
+     */
     public int hash(String mote_integrante) {
         int hash = 1;
         if (mote_integrante.length() > 0) {
@@ -33,50 +50,57 @@ public class TablaHash {
         return hash % this.getSize();
     }
 
+    /**
+     * Inserta un nodo en la tabla hash según el modo especificado.
+     *
+     * @param integrante el nodo a insertar.
+     * @param modo el modo de inserción (1: nombre y numeral, 2: mote, 3:
+     * título).
+     */
     public void insertar(Nodo integrante, int modo) {
         int hash = -1;
         if (modo == 1) {
             hash = this.hash(integrante.getNombre().toLowerCase() + ", " + integrante.getNumeral().toLowerCase() + " of his name");
-
         } else if (modo == 2) {
             hash = this.hash(integrante.getMote().toLowerCase());
-
         } else if (modo == 3) {
             hash = this.hash(integrante.getTitulo().toLowerCase());
+        }
 
-        }
-        if (hash < 0) {
-            hash *= -1;
-        }
         if (hash < 0) {
             hash *= -1;
         }
 
-        if (this.getIntegrantes()[hash].buscar(integrante.getNombre().toLowerCase() + ", " + integrante.getNumeral().toLowerCase() + " of his name", 1) != null && this.getIntegrantes()[hash].buscar(integrante.getMote().toLowerCase(), 2) != null && this.getIntegrantes()[hash].buscar(integrante.getTitulo().toLowerCase(), 3) != null) {
-            return;
+        if (this.getIntegrantes()[hash].buscar(integrante.getNombre().toLowerCase() + ", " + integrante.getNumeral().toLowerCase() + " of his name", 1) != null
+                && this.getIntegrantes()[hash].buscar(integrante.getMote().toLowerCase(), 2) != null
+                && this.getIntegrantes()[hash].buscar(integrante.getTitulo().toLowerCase(), 3) != null) {
+            return; // El nodo ya existe, no se inserta
         } else {
             this.getIntegrantes()[hash].insertar(integrante);
             this.setCount(this.getCount() + 1);
         }
     }
 
+    /**
+     * Busca un nodo en la tabla hash según una clave y un modo de búsqueda.
+     *
+     * @param clave la clave a buscar.
+     * @param modo el modo de búsqueda (1: nombre y numeral, 2: mote, 3:
+     * título).
+     * @return el nodo encontrado o {@code null} si no se encuentra.
+     */
     public Nodo buscar(String clave, int modo) {
         int hash = this.hash(clave.toLowerCase());
         if (hash < 0) {
             hash *= -1;
         }
+
         if (modo == 1) {
             String claves[] = clave.split(",");
-//            System.out.println("ppp   "+this.integrantes[hash].pFirst.nombre + ", " + this.integrantes[hash].pFirst.numeral + " of his name");
-//                                        System.out.println("----------" +clave);
-
-            if (this.getIntegrantes()[hash].getpFirst().getNombre().trim().toLowerCase().equals(claves[0].trim().toLowerCase()) && claves[1].trim().toLowerCase().contains(this.getIntegrantes()[hash].getpFirst().getNumeral().trim().toLowerCase())) {
-
+            if (this.getIntegrantes()[hash].getpFirst().getNombre().trim().toLowerCase().equals(claves[0].trim().toLowerCase())
+                    && claves[1].trim().toLowerCase().contains(this.getIntegrantes()[hash].getpFirst().getNumeral().trim().toLowerCase())) {
                 return this.getIntegrantes()[hash].getpFirst();
-                
             } else {
-//                            System.out.println("----------" +clave);
-
                 return this.getIntegrantes()[hash].buscar(clave, 1);
             }
         } else if (modo == 2) {
@@ -92,8 +116,7 @@ public class TablaHash {
                 return this.getIntegrantes()[hash].buscar(clave, 3);
             }
         }
-        return null;
-
+        return null; // Si no se encuentra el nodo
     }
 
     /**

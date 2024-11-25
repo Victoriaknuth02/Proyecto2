@@ -52,6 +52,7 @@ public class BusquedaArchivo extends javax.swing.JFrame {
         jLabel1.setText("SELECCION DE ARCHIVO");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, -1, -1));
 
+        jButton2.setBackground(new java.awt.Color(102, 102, 102));
         jButton2.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jButton2.setForeground(new java.awt.Color(204, 204, 204));
         jButton2.setText("Busca un archivo");
@@ -62,6 +63,7 @@ public class BusquedaArchivo extends javax.swing.JFrame {
         });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 290, -1, -1));
 
+        jButton5.setBackground(new java.awt.Color(102, 102, 102));
         jButton5.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         jButton5.setForeground(new java.awt.Color(204, 204, 204));
         jButton5.setText("Regresar");
